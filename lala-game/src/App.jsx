@@ -108,7 +108,7 @@ export default function App() {
   const [showFeedMenu, setShowFeedMenu] = useState(false);
   const [showWardrobe, setShowWardrobe] = useState(false);
   const [showGallery, setShowGallery] = useState(false);
-  const [activeMedia, setActiveMedia] = useState(photoGalleryItems[0] ?? null);
+  const [activeMedia, setActiveMedia] = useState(memoriesData[0] ?? null);
   const [isEating, setIsEating] = useState(false);
   const [activeBowl, setActiveBowl] = useState(null);
   const [ballX, setBallX] = useState(50);
@@ -1140,7 +1140,7 @@ export default function App() {
     setShowFeedMenu(false);
     setShowPlayMenu(false);
     setShowGallery(true);
-    setActiveMedia((current) => current ?? galleryItems[0] ?? null);
+    setActiveMedia((current) => current ?? memoriesData[0] ?? null);
   };
 
   const closeGallery = () => {
