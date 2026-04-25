@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Mic, Moon, Utensils, Heart, Activity, AlertCircle, Save, Shirt, Coins, Volume2, VolumeX, Camera } from 'lucide-react';
+import { Mic, Moon, Utensils, Heart, Activity, AlertCircle, Save, Shirt, Coins, Volume2, VolumeX, Camera, Images, Video, X } from 'lucide-react';
 
 // Sound effects using Web Audio API
 const createSound = (frequency, duration, type = 'sine') => {
@@ -32,6 +32,30 @@ const playSound = (soundName) => {
   };
   sounds[soundName]?.();
 };
+
+// Memories Gallery Data
+const memoriesData = [
+  { type: 'image', src: '/11bef94c-d02c-4a46-825e-3c237f1b34de.jpg', caption: 'Lala Memory 1' },
+  { type: 'image', src: '/7041577e-b6c3-46e8-9e24-ba104c283f06.jpg', caption: 'Lala Memory 2' },
+  { type: 'image', src: '/8e2349ec-5605-4680-ad4f-b9d796e98664.jpg', caption: 'Lala Memory 3' },
+  { type: 'image', src: '/97058043-34f4-4183-a223-7ca09099de26.jpg', caption: 'Lala Memory 4' },
+  { type: 'image', src: '/c60d0bde-a31b-4afb-b18f-f3bdccd9c4cc.jpg', caption: 'Lala Memory 5' },
+  { type: 'image', src: '/c6a730dc-c4b6-42d1-8035-ea014827ae93.jpg', caption: 'Lala Memory 6' },
+  { type: 'image', src: '/df638660-426f-464f-94e2-606cc6c61ed1.jpg', caption: 'Lala Memory 7' },
+  { type: 'image', src: '/fdfc5997-f59d-4426-9c98-a06946b8315c.jpg', caption: 'Lala Memory 8' },
+  { type: 'video', src: '/lala_video.mp4', caption: 'Playing around' },
+];
+
+const roomFrameItems = [
+  { src: memoriesData[0].src, x: 8, y: 6, z: -19.5, rotY: 0, w: 5, h: 7 },
+  { src: memoriesData[1].src, x: -8, y: 6, z: -19.5, rotY: 0, w: 5, h: 7 },
+  { src: memoriesData[2].src, x: -19.5, y: 6, z: -8, rotY: Math.PI / 2, w: 6, h: 8 },
+  { src: memoriesData[3].src, x: -19.5, y: 6, z: 2, rotY: Math.PI / 2, w: 6, h: 8 },
+  { src: memoriesData[4].src, x: -19.5, y: 6, z: 12, rotY: Math.PI / 2, w: 6, h: 8 },
+  { src: memoriesData[5].src, x: 19.5, y: 6, z: -8, rotY: -Math.PI / 2, w: 6, h: 8 },
+  { src: memoriesData[6].src, x: 19.5, y: 6, z: 2, rotY: -Math.PI / 2, w: 6, h: 8 },
+  { src: memoriesData[7].src, x: 19.5, y: 6, z: 12, rotY: -Math.PI / 2, w: 6, h: 8 },
+];
 
 export default function App() {
   // Load saved data from localStorage
@@ -83,6 +107,8 @@ export default function App() {
   const [showPlayMenu, setShowPlayMenu] = useState(false);
   const [showFeedMenu, setShowFeedMenu] = useState(false);
   const [showWardrobe, setShowWardrobe] = useState(false);
+  const [showGallery, setShowGallery] = useState(false);
+  const [activeMedia, setActiveMedia] = useState(photoGalleryItems[0] ?? null);
   const [isEating, setIsEating] = useState(false);
   const [activeBowl, setActiveBowl] = useState(null);
   const [ballX, setBallX] = useState(50);
@@ -344,19 +370,9 @@ export default function App() {
       return frameGroup;
     };
 
-    // Back Wall
-    envGroup.add(createPictureFrame("/11bef94c-d02c-4a46-825e-3c237f1b34de.jpg", 8, 6, -19.5, 0, 5, 7)); 
-    envGroup.add(createPictureFrame("/7041577e-b6c3-46e8-9e24-ba104c283f06.jpg", -8, 6, -19.5, 0, 5, 7)); 
-
-    // Left Wall
-    envGroup.add(createPictureFrame("/8e2349ec-5605-4680-84df-b9d796e98664.jpg", -19.5, 6, -8, Math.PI / 2, 6, 8)); 
-    envGroup.add(createPictureFrame("/97058043-34f4-4183-a223-7ca09099de26.jpg", -19.5, 6, 2, Math.PI / 2, 6, 8)); 
-    envGroup.add(createPictureFrame("/c60d0bde-a31b-4afb-b18f-f3bdccd9c4cc.jpg", -19.5, 6, 12, Math.PI / 2, 6, 8)); 
-
-    // Right Wall
-    envGroup.add(createPictureFrame("/c6a730dc-c4b6-42d1-8035-ea014827ae93.jpg", 19.5, 6, -8, -Math.PI / 2, 6, 8)); 
-    envGroup.add(createPictureFrame("/df638660-426f-464f-94e2-606cc6c61ed1.jpg", 19.5, 6, 2, -Math.PI / 2, 6, 8)); 
-    envGroup.add(createPictureFrame("/fdfc5997-f59d-4426-9c98-a06946b8315c.jpg", 19.5, 6, 12, -Math.PI / 2, 6, 8)); 
+    roomFrameItems.forEach((item) => {
+      envGroup.add(createPictureFrame(item.src, item.x, item.y, item.z, item.rotY, item.w, item.h));
+    });
 
     // Sofa
     const couchMat = new THREE.MeshStandardMaterial({ color: 0x2c3e50, roughness: 0.8 });
@@ -861,6 +877,7 @@ export default function App() {
   const openFeedMenu = () => {
     playGameSound('click');
     if (isSleeping) return showMessage("Lala is sleeping! Wake her up first.");
+    setShowGallery(false);
     setShowPlayMenu(false);
     setShowWardrobe(false);
     setShowFeedMenu(true);
@@ -893,6 +910,7 @@ export default function App() {
     if (isSleeping) return showMessage("Lala is resting right now.");
     if (energy < 20) return showMessage("Lala is too tired to play.");
     if (hunger < 20) return showMessage("Lala is too hungry to play.");
+    setShowGallery(false);
     setShowFeedMenu(false);
     setShowWardrobe(false);
     setShowPlayMenu(true);
@@ -1110,9 +1128,29 @@ export default function App() {
 
   const openWardrobe = () => {
     playGameSound('click');
+    setShowGallery(false);
     setShowWardrobe(true);
     setShowFeedMenu(false);
     setShowPlayMenu(false);
+  };
+
+  const openGallery = () => {
+    playGameSound('click');
+    setShowWardrobe(false);
+    setShowFeedMenu(false);
+    setShowPlayMenu(false);
+    setShowGallery(true);
+    setActiveMedia((current) => current ?? galleryItems[0] ?? null);
+  };
+
+  const closeGallery = () => {
+    playGameSound('click');
+    setShowGallery(false);
+  };
+
+  const selectGalleryItem = (item) => {
+    playGameSound('click');
+    setActiveMedia(item);
   };
 
   // Camera zoom function
@@ -1196,6 +1234,14 @@ export default function App() {
               <span className="text-lg">{isDaytime ? '☀️' : '🌙'}</span>
               <span className="font-bold text-sm">{currentHour}:00</span>
             </div>
+            {/* Memories Button */}
+            <button 
+              onClick={openGallery} 
+              className="bg-pink-100 border border-pink-300 px-3 py-1.5 rounded-xl flex items-center gap-2 shadow-sm hover:bg-pink-200 transition-colors"
+            >
+              <span className="text-lg">📸</span>
+              <span className="font-bold text-sm text-pink-700">Memories</span>
+            </button>
           </div>
           {isARSupported && !isARMode && (
             <button onClick={startAR} className="mt-2 py-2 px-4 w-max bg-gradient-to-r from-sky-400 to-indigo-500 text-white font-bold rounded-xl shadow-[0_4px_15px_rgba(99,102,241,0.4)] hover:scale-[1.05] active:scale-95 transition-transform flex justify-center items-center gap-2">
@@ -1262,6 +1308,62 @@ export default function App() {
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Memories Gallery Overlay */}
+      {showGallery && (
+        <div className="absolute inset-0 z-50 bg-white/80 backdrop-blur-xl overflow-y-auto p-4 md:p-8" onClick={closeGallery}>
+          {/* Close Button */}
+          <div className="sticky top-4 z-10 flex justify-end mb-4">
+            <button 
+              onClick={closeGallery}
+              className="bg-white/90 border border-slate-200 text-slate-600 px-4 py-2 rounded-xl font-bold shadow-lg hover:bg-slate-50 hover:text-slate-900 transition-all flex items-center gap-2"
+            >
+              Close <span className="text-lg">✕</span>
+            </button>
+          </div>
+
+          {/* Gallery Title */}
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-black text-slate-800 mb-2">📸 Lala Memories</h2>
+            <p className="text-slate-500">Precious moments with your virtual pet</p>
+          </div>
+
+          {/* Responsive Grid */}
+          <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6" onClick={(e) => e.stopPropagation()}>
+            {memoriesData.map((item, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300 border border-slate-100"
+              >
+                {item.type === 'video' ? (
+                  <div className="relative">
+                    <video 
+                      controls 
+                      className="w-full aspect-video object-cover"
+                      src={item.src}
+                    />
+                    <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded-lg">
+                      🎥 Video
+                    </div>
+                  </div>
+                ) : (
+                  <img 
+                    src={item.src} 
+                    alt={item.caption}
+                    className="w-full aspect-square object-cover"
+                  />
+                )}
+                <div className="p-4">
+                  <p className="font-semibold text-slate-700 text-center">{item.caption}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom Spacing */}
+          <div className="h-8"></div>
         </div>
       )}
 
@@ -1395,7 +1497,7 @@ export default function App() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-4 gap-2 md:gap-4">
+            <div className="grid grid-cols-2 gap-2 md:gap-4 sm:grid-cols-5">
               <button onClick={openFeedMenu} className={`flex flex-col items-center justify-center p-3 md:p-4 text-orange-500 rounded-2xl active:scale-95 transition-all group ${isARMode ? 'bg-white/80 shadow-md hover:bg-white' : 'bg-white shadow-sm border border-slate-100 hover:-translate-y-1 hover:shadow-md hover:bg-orange-50'}`}>
                 <Utensils className="w-8 h-8 md:w-10 md:h-10 mb-2 group-hover:scale-110 transition-transform" />
                 <span className="text-xs md:text-sm font-bold text-slate-600">Feed</span>
@@ -1409,6 +1511,11 @@ export default function App() {
               <button onClick={toggleSleep} className={`flex flex-col items-center justify-center p-3 md:p-4 rounded-2xl transition-all group ${isSleeping ? 'bg-indigo-600 text-white shadow-inner scale-95' : isARMode ? 'bg-white/80 text-indigo-500 shadow-md hover:bg-white active:scale-95' : 'bg-white text-indigo-500 shadow-sm border border-slate-100 hover:-translate-y-1 hover:shadow-md hover:bg-indigo-50 active:scale-95'}`}>
                 <Moon className="w-8 h-8 md:w-10 md:h-10 mb-2 group-hover:scale-110 transition-transform" />
                 <span className={`text-xs md:text-sm font-bold ${isSleeping ? 'text-white' : 'text-slate-600'}`}>{isSleeping ? 'Wake' : 'Sleep'}</span>
+              </button>
+
+              <button onClick={openGallery} className={`flex flex-col items-center justify-center p-3 md:p-4 text-violet-500 rounded-2xl active:scale-95 transition-all group ${isARMode ? 'bg-white/80 shadow-md hover:bg-white' : 'bg-white shadow-sm border border-slate-100 hover:-translate-y-1 hover:shadow-md hover:bg-violet-50'}`}>
+                <Images className="w-8 h-8 md:w-10 md:h-10 mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs md:text-sm font-bold text-slate-600">Gallery</span>
               </button>
 
               <button onClick={startListening} disabled={isSleeping || isListening} className={`flex flex-col items-center justify-center p-3 md:p-4 rounded-2xl transition-all group ${isListening ? 'bg-green-500 text-white animate-pulse shadow-inner' : isARMode ? 'bg-white/80 text-green-500 shadow-md hover:bg-white active:scale-95' : 'bg-white text-green-500 shadow-sm border border-slate-100 hover:-translate-y-1 hover:shadow-md hover:bg-green-50 active:scale-95'} ${isSleeping ? 'opacity-50 cursor-not-allowed grayscale' : ''}`}>
