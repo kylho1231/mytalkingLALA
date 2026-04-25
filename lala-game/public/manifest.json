@@ -1,0 +1,21 @@
+{
+  "name": "My Talking Lala 3D",
+  "short_name": "Lala Game",
+  "description": "A magical 3D virtual pet game featuring Lala! Feed her, play games, and watch her grow happy.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f3e8",
+  "theme_color": "#ec4899",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/lala-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"]
+}
