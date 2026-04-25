@@ -37,7 +37,7 @@ const playSound = (soundName) => {
 const memoriesData = [
   { type: 'image', src: '/11bef94c-d02c-4a46-825e-3c237f1b34de.jpg', caption: 'Lala Memory 1' },
   { type: 'image', src: '/7041577e-b6c3-46e8-9e24-ba104c283f06.jpg', caption: 'Lala Memory 2' },
-  { type: 'image', src: '/8e2349ec-5605-4680-ad4f-b9d796e98664.jpg', caption: 'Lala Memory 3' },
+  { type: 'image', src: '/8e2349ec-5605-4680-84df-b9d796e98664.jpg', caption: 'Lala Memory 3' },
   { type: 'image', src: '/97058043-34f4-4183-a223-7ca09099de26.jpg', caption: 'Lala Memory 4' },
   { type: 'image', src: '/c60d0bde-a31b-4afb-b18f-f3bdccd9c4cc.jpg', caption: 'Lala Memory 5' },
   { type: 'image', src: '/c6a730dc-c4b6-42d1-8035-ea014827ae93.jpg', caption: 'Lala Memory 6' },
@@ -46,15 +46,16 @@ const memoriesData = [
   { type: 'video', src: '/lala_video.mp4', caption: 'Playing around' },
 ];
 
+// Room picture frames using first 8 images (not video)
 const roomFrameItems = [
-  { src: memoriesData[0].src, x: 8, y: 6, z: -19.5, rotY: 0, w: 5, h: 7 },
-  { src: memoriesData[1].src, x: -8, y: 6, z: -19.5, rotY: 0, w: 5, h: 7 },
-  { src: memoriesData[2].src, x: -19.5, y: 6, z: -8, rotY: Math.PI / 2, w: 6, h: 8 },
-  { src: memoriesData[3].src, x: -19.5, y: 6, z: 2, rotY: Math.PI / 2, w: 6, h: 8 },
-  { src: memoriesData[4].src, x: -19.5, y: 6, z: 12, rotY: Math.PI / 2, w: 6, h: 8 },
-  { src: memoriesData[5].src, x: 19.5, y: 6, z: -8, rotY: -Math.PI / 2, w: 6, h: 8 },
-  { src: memoriesData[6].src, x: 19.5, y: 6, z: 2, rotY: -Math.PI / 2, w: 6, h: 8 },
-  { src: memoriesData[7].src, x: 19.5, y: 6, z: 12, rotY: -Math.PI / 2, w: 6, h: 8 },
+  { src: '/11bef94c-d02c-4a46-825e-3c237f1b34de.jpg', x: 8, y: 6, z: -19.5, rotY: 0, w: 5, h: 7 },
+  { src: '/7041577e-b6c3-46e8-9e24-ba104c283f06.jpg', x: -8, y: 6, z: -19.5, rotY: 0, w: 5, h: 7 },
+  { src: '/8e2349ec-5605-4680-84df-b9d796e98664.jpg', x: -19.5, y: 6, z: -8, rotY: Math.PI / 2, w: 6, h: 8 },
+  { src: '/97058043-34f4-4183-a223-7ca09099de26.jpg', x: -19.5, y: 6, z: 2, rotY: Math.PI / 2, w: 6, h: 8 },
+  { src: '/c60d0bde-a31b-4afb-b18f-f3bdccd9c4cc.jpg', x: -19.5, y: 6, z: 12, rotY: Math.PI / 2, w: 6, h: 8 },
+  { src: '/c6a730dc-c4b6-42d1-8035-ea014827ae93.jpg', x: 19.5, y: 6, z: -8, rotY: -Math.PI / 2, w: 6, h: 8 },
+  { src: '/df638660-426f-464f-94e2-606cc6c61ed1.jpg', x: 19.5, y: 6, z: 2, rotY: -Math.PI / 2, w: 6, h: 8 },
+  { src: '/fdfc5997-f59d-4426-9c98-a06946b8315c.jpg', x: 19.5, y: 6, z: 12, rotY: -Math.PI / 2, w: 6, h: 8 },
 ];
 
 export default function App() {
