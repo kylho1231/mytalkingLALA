@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd lala-game && npm run build",
+  "outputDirectory": "lala-game/dist",
+  "framework": "vite",
+  "installCommand": "npm install && cd lala-game && npm install"
+}
